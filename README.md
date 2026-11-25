@@ -24,6 +24,7 @@ results can be read on GitHub without running anything.
 | Natural language inference | Replacing every SNLI premise with an uninformative sentence costs a from-scratch transformer only **0.0062** accuracy (**0.5708** → **0.5646**), exposing hypothesis-only bias; a BiLSTM loses **0.0441** |
 | Fine-tuning pre-trained transformers | SciBERT detects adverse drug effects at **0.9266** F1 against **0.9111** for DistilBERT and **0.8273** for TF-IDF; dynamic padding feeds the model **38.4%** fewer tokens and lifts DistilBERT throughput from **1067.7** to **1716.4** sentences/s |
 | Prompting and evaluating LLMs | With its full prompt (role, chain-of-thought, three examples), flan-t5-base is **100.0%** format-compliant on ICD-10 coding, yet **90.0%** of its codes are hallucinated, copied from the in-context examples; macro F1 never exceeds **0.0667** |
+| Retrieval-based fact-checking | A query synonym map lifts a TF-IDF fact-checker's in-scope coverage from **0.85** to **1.00** with fallback precision unchanged at **0.80**; a MiniLM bi-encoder ranks the expected claim first for **18/20** in-scope queries against **16/20** for TF-IDF |
 
 ## Labs
 
@@ -40,28 +41,31 @@ results can be read on GitHub without running anything.
 | 09 | [Self-Attention for NLI](Lab_9.ipynb) | • Scaled dot-product and multi-head attention from scratch, checked against PyTorch<br>• Transformer encoder vs. BiLSTM<br>• Attention heatmaps and entropy<br>• Hypothesis-only bias probes and contrast pairs | SNLI | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-obaid/language-modeling-labs/blob/main/Lab_9.ipynb) |
 | 10 | [Fine-Tuning BERT for ADE Detection](Lab_10.ipynb) | • DistilBERT vs. SciBERT fine-tuning against a TF-IDF baseline<br>• Domain shift: subword fragmentation and fill-mask probes<br>• Batch-inference profiling: throughput, latency, GPU memory<br>• Dynamic vs. fixed padding and a latency-SLA check | ADE Corpus v2 | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-obaid/language-modeling-labs/blob/main/Lab_10.ipynb) |
 | 11 | [Prompting and Evaluating LLMs](Lab_11.ipynb) | • Scaling laws and Chinchilla compute budgeting<br>• Failure modes across pretraining, instruction tuning and RLHF<br>• Zero-shot to few-shot, chain-of-thought and role prompt ablation<br>• Ordering sensitivity, format compliance and hallucination checks | Clinical notes<br>ICD-10-CM | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-obaid/language-modeling-labs/blob/main/Lab_11.ipynb) |
-
-> **Coming next:** End-to-End NLP Application
+| 12 | [Fact-Checking Dialogue System](Lab_12.ipynb) | • spaCy NER topic profile of fake news<br>• TextRank vs. BART summarization, ROUGE-1 from scratch<br>• TF-IDF retrieval over a 30-claim response bank with a fallback threshold<br>• Human ratings, failure diagnosis and a synonym-map fix<br>• Dense retrieval with MiniLM | Fake and real news<br>30-claim response bank | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-obaid/language-modeling-labs/blob/main/Lab_12.ipynb) |
 
 ## Tech stack
 
 | Library | Role | Labs |
 | --- | --- | :-: |
-| ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) | Language | 01–11 |
-| ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white) | Arrays and vector math | 01–11 |
-| ![pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) | Tabular text data | 01–02 |
-| ![NLTK](https://img.shields.io/badge/NLTK-1F6F8B?style=for-the-badge) | Brown corpus, tokenization, stemming and lemmatization | 01–04 |
-| ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white) | TF-IDF, logistic regression, Naive Bayes, LinearSVC, PCA | 03, 05, 06, 10 |
-| ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white) | Word2Vec, feedforward networks, RNN / LSTM / GRU, seq2seq with attention, transformer encoder, batch-inference profiling, flan-t5 inference | 05–11 |
+| ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) | Language | 01–12 |
+| ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white) | Arrays and vector math | 01–12 |
+| ![pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) | Tabular text data | 01–02, 12 |
+| ![NLTK](https://img.shields.io/badge/NLTK-1F6F8B?style=for-the-badge) | Brown corpus, tokenization, stop words, stemming and lemmatization | 01–04, 12 |
+| ![spaCy](https://img.shields.io/badge/spaCy-09A3D5?style=for-the-badge&logo=spacy&logoColor=white) | Named-entity recognition | 12 |
+| ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white) | TF-IDF, cosine retrieval, logistic regression, Naive Bayes, LinearSVC, PCA | 03, 05, 06, 10, 12 |
+| ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white) | Word2Vec, feedforward networks, RNN / LSTM / GRU, seq2seq with attention, transformer encoder, batch-inference profiling, flan-t5 and BART inference | 05–12 |
 | ![gensim](https://img.shields.io/badge/gensim-4C8CF5?style=for-the-badge) | Pretrained GloVe vectors | 05 |
-| ![Hugging Face](https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black) | WordPiece (`tokenizers`), BERT fine-tuning, fill-mask and flan-t5 prompting (`transformers`), CoNLL-2003, SNLI and ADE (`datasets`) | 03, 07, 09–11 |
+| ![Hugging Face](https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black) | WordPiece (`tokenizers`), BERT fine-tuning, fill-mask, flan-t5 prompting and BART summarization (`transformers`), MiniLM sentence embeddings (`sentence-transformers`), CoNLL-2003, SNLI and ADE (`datasets`) | 03, 07, 09–12 |
 | ![SacreBLEU](https://img.shields.io/badge/SacreBLEU-5B5EA6?style=for-the-badge) | Reference BLEU scores | 08 |
-| ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white) | Notebooks, runnable on Google Colab | 01–11 |
+| ![rouge-score](https://img.shields.io/badge/rouge--score-5B5EA6?style=for-the-badge) | Reference ROUGE-1 scores | 12 |
+| ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white) | Notebooks, runnable on Google Colab | 01–12 |
 
 ## Getting started
 
 **Colab:** click a badge in the [Labs](#labs) table, then choose **Runtime → Run all**.
 The first cell installs any missing packages and datasets download on first use.
+The one exception is Lab 12, which reads `News_combined.csv`, a 116 MB course
+file that is not redistributed here; upload it to the Colab session before running.
 Lab 10 fine-tunes two transformers, so give it a GPU runtime
 (**Runtime → Change runtime type → T4 GPU**); the other labs run on CPU.
 
